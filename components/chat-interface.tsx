@@ -31,7 +31,7 @@ const EXAMPLE_PROMPTS = [
   },
   {
     icon: "●",
-    text: "Show a rotating cube on plane",
+    text: "Show a rotating cube on plane centered at origin",
   },
 ]
 
