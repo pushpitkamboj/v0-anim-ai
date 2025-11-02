@@ -16,9 +16,9 @@ interface MessageItemProps {
 }
 
 const LOADING_STAGES = [
-  { text: "Analyzing your request...", duration: 3000 },
-  { text: "Generating animation code...", duration: 5000 },
-  { text: "Rendering your animation...", duration: 10000 },
+  { text: "Analyzing your request...", duration: 5000 },
+  { text: "Generating animation code...", duration: 15000 },
+  { text: "Rendering your animation...", duration: 25000 },
   { text: "Almost there! Finalizing...", duration: 0 },
 ]
 
