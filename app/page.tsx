@@ -7,7 +7,6 @@ import { Button } from "@/components/ui/button"
 import Link from "next/link"
 import { createClient } from "@/lib/supabase/client"
 import { useRouter } from "next/navigation"
-import { fetchWithTimeout } from "@/lib/fetch-with-timeout"
 import { Play, Sparkles } from "lucide-react"
 
 interface Message {
@@ -20,18 +19,44 @@ interface Message {
   isError?: boolean
 }
 
-interface GalleryVideo {
-  prompt: string
-  video_url: string
-  created_at: string
-}
+const GALLERY_VIDEOS = [
+  {
+    prompt: "Draw the equation of SHM",
+    video_url:
+      "https://pub-b215a097b7b243dc86da838a88d50339.r2.dev/media/videos/SimpleHarmonicMotionGraph/480p15/SimpleHarmonicMotionGraph.mp4",
+  },
+  {
+    prompt: "Draw y = sin(x) from -π to π",
+    video_url:
+      "https://pub-b215a097b7b243dc86da838a88d50339.r2.dev/media/videos/SineCurveWithKeyPoints/480p15/SineCurveWithKeyPoints.mp4",
+  },
+  {
+    prompt: "Visualize Electron Orbits in a Hydrogen Atom",
+    video_url:
+      "https://pub-b215a097b7b243dc86da838a88d50339.r2.dev/media/videos/HydrogenAtomOrbits/480p15/HydrogenAtomOrbits.mp4",
+  },
+  {
+    prompt: "Plot a 3D spiral curve expanding along the z-axis",
+    video_url:
+      "https://pub-b215a097b7b243dc86da838a88d50339.r2.dev/media/videos/Spiral3DScene/480p15/Spiral3DScene.mp4",
+  },
+  {
+    prompt: "Describe a Tangent to the Circle",
+    video_url:
+      "https://pub-b215a097b7b243dc86da838a88d50339.r2.dev/media/videos/TangentToCircleScene/480p15/TangentToCircleScene.mp4",
+  },
+  {
+    prompt: "Derive the Formula for Thales Theorem",
+    video_url:
+      "https://pub-b215a097b7b243dc86da838a88d50339.r2.dev/media/videos/ThalesTheoremDerivation/480p15/ThalesTheoremDerivation.mp4",
+  },
+]
 
 export default function Home() {
   const [messages, setMessages] = useState<Message[]>([])
   const [isHydrated, setIsHydrated] = useState(false)
   const [showLoginPrompt, setShowLoginPrompt] = useState(false)
-  const [galleryVideos, setGalleryVideos] = useState<GalleryVideo[]>([])
-  const [selectedVideo, setSelectedVideo] = useState<GalleryVideo | null>(null)
+  const [selectedVideo, setSelectedVideo] = useState<{ prompt: string; video_url: string } | null>(null)
   const router = useRouter()
   const supabase = createClient()
 
@@ -48,19 +73,6 @@ export default function Home() {
     checkUser()
 
     setIsHydrated(true)
-
-    const fetchGallery = async () => {
-      try {
-        const response = await fetch("/api/gallery")
-        const data = await response.json()
-        if (data.success) {
-          setGalleryVideos(data.videos)
-        }
-      } catch (error) {
-        console.error("[v0] Error fetching gallery:", error)
-      }
-    }
-    fetchGallery()
   }, [])
 
   useEffect(() => {
@@ -93,17 +105,13 @@ export default function Home() {
 
     try {
       console.log("[v0] Calling API route...")
-      const response = await fetchWithTimeout(
-        "/api/generate",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ prompt: message }),
+      const response = await fetch("/api/generate", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
         },
-        600000, // 10 minutes
-      )
+        body: JSON.stringify({ prompt: message }),
+      })
 
       console.log("[v0] API response status:", response.status)
 
@@ -163,9 +171,7 @@ export default function Home() {
   }
 
   return (
-    <div className="flex flex-col h-screen bg-background relative overflow-hidden">
-      <div className="absolute inset-0 bg-grid-pattern opacity-[0.02] pointer-events-none" />
-
+    <div className="flex flex-col min-h-screen bg-background">
       <TopBar showAuth={true} />
 
       {showLoginPrompt && (
@@ -184,74 +190,67 @@ export default function Home() {
         </div>
       )}
 
-      <div className="flex-1 overflow-y-auto relative z-10">
-        <div className="h-screen flex flex-col">
-          <div className="flex-1 overflow-hidden">
-            <ChatInterface messages={messages} onSendMessage={handleSendMessage} />
-          </div>
+      <div className="flex-1">
+        <div className="min-h-screen flex flex-col">
+          <ChatInterface messages={messages} onSendMessage={handleSendMessage} />
         </div>
 
-        {galleryVideos.length > 0 && (
-          <div className="border-t border-border bg-muted/30">
-            <div className="max-w-7xl mx-auto px-6 py-16">
-              <div className="text-center mb-12">
-                <div className="inline-flex items-center gap-2 px-4 py-2 bg-foreground/5 rounded-full border border-border mb-4">
-                  <Sparkles size={16} className="text-foreground" />
-                  <span className="text-sm font-semibold text-foreground">Community Showcase</span>
-                </div>
-                <h2 className="text-4xl font-black text-foreground tracking-tight mb-3">
-                  Explore Amazing{" "}
-                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-foreground to-foreground/60">
-                    Animations
-                  </span>
-                </h2>
-                <p className="text-base text-muted-foreground max-w-2xl mx-auto">
-                  Discover stunning scientific visualizations created by our community
-                </p>
+        <div className="border-t border-border bg-background">
+          <div className="max-w-7xl mx-auto px-6 py-20">
+            <div className="text-center mb-16">
+              <div className="inline-flex items-center gap-2 px-4 py-2 bg-foreground/5 rounded-full border border-border mb-6">
+                <Sparkles size={16} className="text-foreground" />
+                <span className="text-sm font-semibold text-foreground">Gallery</span>
               </div>
+              <h2 className="text-5xl font-black text-foreground tracking-tight mb-4">
+                Explore Amazing{" "}
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-foreground to-foreground/60">
+                  Animations
+                </span>
+              </h2>
+              <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+                Discover stunning scientific visualizations created by our community
+              </p>
+            </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {galleryVideos.slice(0, 6).map((video, index) => (
-                  <div
-                    key={index}
-                    className="group relative bg-card border border-border rounded-2xl overflow-hidden hover:shadow-2xl hover:border-foreground/20 transition-all duration-300 cursor-pointer"
-                    onClick={() => setSelectedVideo(video)}
-                  >
-                    <div className="aspect-video bg-muted relative overflow-hidden">
-                      <video
-                        src={video.video_url}
-                        className="w-full h-full object-cover"
-                        muted
-                        loop
-                        playsInline
-                        onMouseEnter={(e) => e.currentTarget.play()}
-                        onMouseLeave={(e) => {
-                          e.currentTarget.pause()
-                          e.currentTarget.currentTime = 0
-                        }}
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-                      <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                        <div className="w-16 h-16 bg-white/90 rounded-full flex items-center justify-center backdrop-blur-sm">
-                          <Play size={24} className="text-black ml-1" fill="black" />
-                        </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {GALLERY_VIDEOS.map((video, index) => (
+                <div
+                  key={index}
+                  className="group relative bg-card border border-border rounded-2xl overflow-hidden hover:shadow-2xl hover:border-foreground/20 transition-all duration-300 cursor-pointer"
+                  onClick={() => setSelectedVideo(video)}
+                >
+                  <div className="aspect-video bg-muted relative overflow-hidden">
+                    <video
+                      src={video.video_url}
+                      className="w-full h-full object-cover"
+                      muted
+                      loop
+                      playsInline
+                      onMouseEnter={(e) => e.currentTarget.play()}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.pause()
+                        e.currentTarget.currentTime = 0
+                      }}
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+                    <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                      <div className="w-16 h-16 bg-white/90 rounded-full flex items-center justify-center backdrop-blur-sm">
+                        <Play size={24} className="text-black ml-1" fill="black" />
                       </div>
                     </div>
-
-                    <div className="p-4">
-                      <p className="text-sm font-medium text-foreground line-clamp-2 group-hover:text-foreground/80 transition-colors">
-                        {video.prompt}
-                      </p>
-                      <p className="text-xs text-muted-foreground mt-2">
-                        {new Date(video.created_at).toLocaleDateString()}
-                      </p>
-                    </div>
                   </div>
-                ))}
-              </div>
+
+                  <div className="p-5">
+                    <p className="text-sm font-semibold text-foreground line-clamp-2 group-hover:text-foreground/80 transition-colors">
+                      {video.prompt}
+                    </p>
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
-        )}
+        </div>
       </div>
 
       {selectedVideo && (
@@ -267,11 +266,8 @@ export default function Home() {
               <video src={selectedVideo.video_url} controls autoPlay className="w-full h-full" />
             </div>
             <div className="p-6">
-              <h3 className="text-lg font-semibold text-foreground mb-2">{selectedVideo.prompt}</h3>
-              <p className="text-sm text-muted-foreground">
-                Created on {new Date(selectedVideo.created_at).toLocaleDateString()}
-              </p>
-              <Button onClick={() => setSelectedVideo(null)} variant="outline" className="mt-4">
+              <h3 className="text-lg font-semibold text-foreground mb-4">{selectedVideo.prompt}</h3>
+              <Button onClick={() => setSelectedVideo(null)} variant="outline">
                 Close
               </Button>
             </div>
