@@ -39,19 +39,13 @@ export default function ChatInterface({ messages, onSendMessage }: ChatInterface
   const [inputValue, setInputValue] = useState("")
   const [isLoading, setIsLoading] = useState(false)
   const messagesEndRef = useRef<HTMLDivElement>(null)
-  const isInitialMount = useRef(true)
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
   }
 
   useEffect(() => {
-    if (messages.length > 0 && !isInitialMount.current) {
-      scrollToBottom()
-    }
-    if (isInitialMount.current) {
-      isInitialMount.current = false
-    }
+    scrollToBottom()
   }, [messages])
 
   const handleSend = async () => {
@@ -86,20 +80,20 @@ export default function ChatInterface({ messages, onSendMessage }: ChatInterface
   return (
     <div className="flex flex-col h-full bg-background">
       {/* Messages Area */}
-      <div className="flex-1 overflow-y-auto flex flex-col items-center w-full px-4 pt-20">
-        <div className="w-full max-w-3xl py-6">
+      <div className="flex-1 overflow-y-auto flex flex-col items-center w-full px-4">
+        <div className="w-full max-w-3xl py-4">
           {messages.length === 0 ? (
-            <div className="flex items-center justify-center h-full min-h-[350px]">
-              <div className="text-center max-w-3xl">
-                <div className="relative mb-6">
+            <div className="flex items-center justify-center h-full min-h-[300px]">
+              <div className="text-center max-w-2xl">
+                <div className="relative mb-4">
                   <div className="absolute inset-0 bg-gradient-to-br from-foreground/10 to-foreground/5 rounded-3xl blur-3xl" />
-                  <div className="relative w-20 h-20 bg-gradient-to-br from-foreground via-foreground/90 to-foreground/70 rounded-3xl flex items-center justify-center mx-auto shadow-2xl">
-                    <Sparkles className="text-background" size={40} strokeWidth={2} />
+                  <div className="relative w-16 h-16 bg-gradient-to-br from-foreground via-foreground/90 to-foreground/70 rounded-3xl flex items-center justify-center mx-auto shadow-2xl">
+                    <Sparkles className="text-background" size={32} strokeWidth={2} />
                   </div>
                 </div>
 
-                <h1 className="text-foreground text-5xl font-black mb-3 tracking-tight">AnimAI Studio</h1>
-                <p className="text-muted-foreground text-xl mb-8 font-medium leading-relaxed max-w-2xl mx-auto">
+                <h1 className="text-foreground text-3xl font-black mb-1 tracking-tight">AnimAI Studio</h1>
+                <p className="text-muted-foreground text-base mb-5 font-medium leading-relaxed max-w-lg mx-auto">
                   Great Animations Take Time. Ours? Just 5 Mins.
                 </p>
 
@@ -113,7 +107,7 @@ export default function ChatInterface({ messages, onSendMessage }: ChatInterface
                       <li
                         key={index}
                         onClick={() => handleExampleClick(prompt.text)}
-                        className="flex items-center gap-3 p-3 rounded-xl hover:bg-background/80 transition-all cursor-pointer group border border-transparent hover:border-border/50 hover:shadow-md"
+                        className="flex items-center gap-4 p-4 rounded-xl hover:bg-background/80 transition-all cursor-pointer group border border-transparent hover:border-border/50 hover:shadow-md"
                       >
                         <div className="w-10 h-10 bg-foreground/5 rounded-lg flex items-center justify-center group-hover:bg-foreground/10 group-hover:scale-110 transition-all flex-shrink-0">
                           <span className="text-2xl font-bold">{prompt.icon}</span>
@@ -144,8 +138,7 @@ export default function ChatInterface({ messages, onSendMessage }: ChatInterface
         </div>
       </div>
 
-      {/* Input Area */}
-      <div className="border-t border-border/50 p-6 bg-background/95 backdrop-blur-xl sticky bottom-0">
+      <div className="border-t border-border/50 p-4 bg-background/80 backdrop-blur-xl">
         <div className="flex gap-3 max-w-3xl mx-auto">
           <textarea
             value={inputValue}
