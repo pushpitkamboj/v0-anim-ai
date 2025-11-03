@@ -8,6 +8,7 @@ import Link from "next/link"
 import { createClient } from "@/lib/supabase/client"
 import { useRouter } from "next/navigation"
 import { fetchWithTimeout } from "@/lib/fetch-with-timeout"
+import { Play, Sparkles } from "lucide-react"
 
 interface Message {
   id: string
@@ -19,10 +20,18 @@ interface Message {
   isError?: boolean
 }
 
+interface GalleryVideo {
+  prompt: string
+  video_url: string
+  created_at: string
+}
+
 export default function Home() {
   const [messages, setMessages] = useState<Message[]>([])
   const [isHydrated, setIsHydrated] = useState(false)
   const [showLoginPrompt, setShowLoginPrompt] = useState(false)
+  const [galleryVideos, setGalleryVideos] = useState<GalleryVideo[]>([])
+  const [selectedVideo, setSelectedVideo] = useState<GalleryVideo | null>(null)
   const router = useRouter()
   const supabase = createClient()
 
@@ -39,6 +48,19 @@ export default function Home() {
     checkUser()
 
     setIsHydrated(true)
+
+    const fetchGallery = async () => {
+      try {
+        const response = await fetch("/api/gallery")
+        const data = await response.json()
+        if (data.success) {
+          setGalleryVideos(data.videos)
+        }
+      } catch (error) {
+        console.error("[v0] Error fetching gallery:", error)
+      }
+    }
+    fetchGallery()
   }, [])
 
   useEffect(() => {
@@ -162,9 +184,100 @@ export default function Home() {
         </div>
       )}
 
-      <div className="flex-1 overflow-hidden relative z-10">
-        <ChatInterface messages={messages} onSendMessage={handleSendMessage} />
+      <div className="flex-1 overflow-y-auto relative z-10">
+        <div className="h-screen flex flex-col">
+          <div className="flex-1 overflow-hidden">
+            <ChatInterface messages={messages} onSendMessage={handleSendMessage} />
+          </div>
+        </div>
+
+        {galleryVideos.length > 0 && (
+          <div className="border-t border-border bg-muted/30">
+            <div className="max-w-7xl mx-auto px-6 py-16">
+              <div className="text-center mb-12">
+                <div className="inline-flex items-center gap-2 px-4 py-2 bg-foreground/5 rounded-full border border-border mb-4">
+                  <Sparkles size={16} className="text-foreground" />
+                  <span className="text-sm font-semibold text-foreground">Community Showcase</span>
+                </div>
+                <h2 className="text-4xl font-black text-foreground tracking-tight mb-3">
+                  Explore Amazing{" "}
+                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-foreground to-foreground/60">
+                    Animations
+                  </span>
+                </h2>
+                <p className="text-base text-muted-foreground max-w-2xl mx-auto">
+                  Discover stunning scientific visualizations created by our community
+                </p>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {galleryVideos.slice(0, 6).map((video, index) => (
+                  <div
+                    key={index}
+                    className="group relative bg-card border border-border rounded-2xl overflow-hidden hover:shadow-2xl hover:border-foreground/20 transition-all duration-300 cursor-pointer"
+                    onClick={() => setSelectedVideo(video)}
+                  >
+                    <div className="aspect-video bg-muted relative overflow-hidden">
+                      <video
+                        src={video.video_url}
+                        className="w-full h-full object-cover"
+                        muted
+                        loop
+                        playsInline
+                        onMouseEnter={(e) => e.currentTarget.play()}
+                        onMouseLeave={(e) => {
+                          e.currentTarget.pause()
+                          e.currentTarget.currentTime = 0
+                        }}
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+                      <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                        <div className="w-16 h-16 bg-white/90 rounded-full flex items-center justify-center backdrop-blur-sm">
+                          <Play size={24} className="text-black ml-1" fill="black" />
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="p-4">
+                      <p className="text-sm font-medium text-foreground line-clamp-2 group-hover:text-foreground/80 transition-colors">
+                        {video.prompt}
+                      </p>
+                      <p className="text-xs text-muted-foreground mt-2">
+                        {new Date(video.created_at).toLocaleDateString()}
+                      </p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        )}
       </div>
+
+      {selectedVideo && (
+        <div
+          className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-6"
+          onClick={() => setSelectedVideo(null)}
+        >
+          <div
+            className="bg-background rounded-2xl max-w-4xl w-full overflow-hidden border border-border shadow-2xl"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="aspect-video bg-black">
+              <video src={selectedVideo.video_url} controls autoPlay className="w-full h-full" />
+            </div>
+            <div className="p-6">
+              <h3 className="text-lg font-semibold text-foreground mb-2">{selectedVideo.prompt}</h3>
+              <p className="text-sm text-muted-foreground">
+                Created on {new Date(selectedVideo.created_at).toLocaleDateString()}
+              </p>
+              <Button onClick={() => setSelectedVideo(null)} variant="outline" className="mt-4">
+                Close
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }

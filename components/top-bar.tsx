@@ -1,7 +1,7 @@
 import { FaGithub } from "react-icons/fa"
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
-import { Sparkles, Images } from "lucide-react"
+import { Sparkles } from "lucide-react"
 
 interface TopBarProps {
   showAuth?: boolean
@@ -29,13 +29,6 @@ export default function TopBar({ showAuth = true }: TopBarProps) {
 
       {/* Right Side Content */}
       <div className="flex items-center gap-3">
-        <Button asChild variant="ghost" size="sm" className="font-semibold gap-2">
-          <Link href="/gallery">
-            <Images size={16} />
-            Gallery
-          </Link>
-        </Button>
-
         {showAuth && (
           <div className="flex items-center gap-2">
             <Button asChild variant="ghost" size="sm" className="font-semibold">
