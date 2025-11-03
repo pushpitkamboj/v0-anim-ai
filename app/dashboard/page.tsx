@@ -14,6 +14,7 @@ import {
   deleteChatSession,
   updateChatSessionTitle,
 } from "@/app/actions/chat"
+import { fetchWithTimeout } from "@/lib/fetch-with-timeout"
 
 interface Message {
   id: string
@@ -153,13 +154,17 @@ export default function DashboardPage() {
     setMessages((prev) => [...prev, initialLoadingMessage])
 
     try {
-      const response = await fetch("/api/generate", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
+      const response = await fetchWithTimeout(
+        "/api/generate",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ prompt: message }),
         },
-        body: JSON.stringify({ prompt: message }),
-      })
+        600000, // 10 minutes
+      )
 
       if (!response.ok) {
         throw new Error(`API returned status ${response.status}`)

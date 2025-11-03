@@ -23,7 +23,7 @@ interface ChatInterfaceProps {
 const EXAMPLE_PROMPTS = [
   {
     icon: "∑",
-    text: "Draw y = sin(x) from -π to π",
+    text: "Visualize a spiral (r = a + bθ) growing outward",
   },
   {
     icon: "⚛",

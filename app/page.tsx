@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button"
 import Link from "next/link"
 import { createClient } from "@/lib/supabase/client"
 import { useRouter } from "next/navigation"
+import { fetchWithTimeout } from "@/lib/fetch-with-timeout"
 
 interface Message {
   id: string
@@ -70,13 +71,17 @@ export default function Home() {
 
     try {
       console.log("[v0] Calling API route...")
-      const response = await fetch("/api/generate", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
+      const response = await fetchWithTimeout(
+        "/api/generate",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ prompt: message }),
         },
-        body: JSON.stringify({ prompt: message }),
-      })
+        600000, // 10 minutes
+      )
 
       console.log("[v0] API response status:", response.status)
 
