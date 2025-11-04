@@ -19,7 +19,7 @@ export default function TopBar({ showAuth = true }: TopBarProps) {
         </div>
         <div>
           <h1 className="text-2xl font-black text-foreground tracking-tight group-hover:tracking-normal transition-all">
-            AnimAI
+            VertexAI
           </h1>
           <p className="text-[10px] text-muted-foreground font-bold uppercase tracking-wider">
             Math • Physics • Chemistry
@@ -45,7 +45,7 @@ export default function TopBar({ showAuth = true }: TopBarProps) {
           target="_blank"
           rel="noopener noreferrer"
           className="text-muted-foreground hover:text-foreground transition-all duration-300 hover:scale-110 p-2 rounded-lg hover:bg-muted"
-          aria-label="View AnimAI on GitHub"
+          aria-label="View VertexAI on GitHub"
         >
           <FaGithub size={20} />
         </a>

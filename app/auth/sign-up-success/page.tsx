@@ -18,7 +18,7 @@ export default function SignUpSuccessPage() {
             </CardHeader>
             <CardContent className="text-center">
               <p className="text-sm text-muted-foreground mb-6">
-                Thank you for signing up for AnimAI! Please check your email inbox and click the confirmation link to
+                Thank you for signing up for VertexAI! Please check your email inbox and click the confirmation link to
                 activate your account. Once confirmed, you&apos;ll be able to access all features including chat history
                 and premium plans.
               </p>

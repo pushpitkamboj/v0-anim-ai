@@ -105,7 +105,7 @@ export default function ChatHistorySidebar({
               <Sparkles className="text-primary-foreground" size={16} />
             </div>
             <div>
-              <h2 className="text-sm font-bold text-foreground">AnimAI Studio</h2>
+              <h2 className="text-sm font-bold text-foreground">VertexAI Studio</h2>
               <p className="text-xs text-muted-foreground">Your Workspace</p>
             </div>
           </div>
@@ -135,25 +135,23 @@ export default function ChatHistorySidebar({
                 sessions.map((session) => (
                   <div
                     key={session.id}
-                    className={`group flex items-center justify-between p-3 rounded-lg cursor-pointer transition-all ${
+                    className={`group flex items-center gap-3 p-3 rounded-lg cursor-pointer transition-all ${
                       currentSessionId === session.id
                         ? "bg-primary/10 border border-primary/20 shadow-sm"
                         : "hover:bg-accent/50 border border-transparent"
                     }`}
                     onClick={() => onSelectSession(session.id)}
                   >
-                    <div className="flex items-center gap-3 flex-1 min-w-0">
-                      <div
-                        className={`p-1.5 rounded-md ${currentSessionId === session.id ? "bg-primary/20" : "bg-muted"}`}
-                      >
-                        <MessageSquare className="h-3.5 w-3.5 shrink-0" />
-                      </div>
-                      <span className="text-sm font-medium truncate">{session.title}</span>
+                    <div
+                      className={`p-1.5 rounded-md flex-shrink-0 ${currentSessionId === session.id ? "bg-primary/20" : "bg-muted"}`}
+                    >
+                      <MessageSquare className="h-3.5 w-3.5" />
                     </div>
+                    <span className="text-sm font-medium truncate flex-1 min-w-0">{session.title}</span>
                     <Button
                       variant="ghost"
                       size="icon"
-                      className="h-7 w-7 opacity-0 group-hover:opacity-100 transition-opacity hover:bg-destructive/10 hover:text-destructive"
+                      className="h-7 w-7 flex-shrink-0 opacity-0 group-hover:opacity-100 transition-opacity hover:bg-destructive/10 hover:text-destructive"
                       onClick={(e) => handleDeleteClick(session.id, e)}
                     >
                       <Trash2 className="h-3.5 w-3.5" />

@@ -25,7 +25,7 @@ export default async function PricingPage() {
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-12">
           <h1 className="text-4xl font-bold mb-4">Choose Your Plan</h1>
-          <p className="text-xl text-muted-foreground">Unlock the full potential of AnimAI with our premium plans</p>
+          <p className="text-xl text-muted-foreground">Unlock the full potential of VertexAI with our premium plans</p>
         </div>
 
         <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">

@@ -92,7 +92,7 @@ export default function ChatInterface({ messages, onSendMessage }: ChatInterface
                   </div>
                 </div>
 
-                <h1 className="text-foreground text-3xl font-black mb-1 tracking-tight">AnimAI Studio</h1>
+                <h1 className="text-foreground text-3xl font-black mb-1 tracking-tight">VertexAI Studio</h1>
                 <p className="text-muted-foreground text-base mb-5 font-medium leading-relaxed max-w-lg mx-auto">
                   Great Animations Take Time. Ours? Just 5 Mins.
                 </p>
