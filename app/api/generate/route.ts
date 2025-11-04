@@ -1,6 +1,9 @@
 import { Client } from "@langchain/langgraph-sdk"
 import { createAdminClient } from "@/lib/supabase/admin"
 
+export const maxDuration = 300 // Maximum allowed on Vercel Pro plan
+export const dynamic = "force-dynamic" // Ensure this route is not cached
+
 const LANGGRAPH_API_URL = "https://animai-7ae3101060ad56a4a38c382a0479ece6.us.langgraph.app"
 const LANGGRAPH_API_KEY = "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"
 const LANGGRAPH_ASSISTANT_ID = "fe096781-5601-53d2-b2f6-0d3403f7e9ca"
@@ -76,18 +79,11 @@ export async function POST(request: Request) {
 
     console.log("[v0] Calling LangGraph assistant:", LANGGRAPH_ASSISTANT_ID)
 
-    const timeoutPromise = new Promise((_, reject) =>
-      setTimeout(() => reject(new Error("Request timeout after 5 minutes")), 60000000),
+    const result = await client.runs.wait(
+      null, // null = stateless/memoryless run
+      LANGGRAPH_ASSISTANT_ID,
+      { input: { prompt: prompt } },
     )
-
-    const result = await Promise.race([
-      client.runs.wait(
-        null, // null = stateless/memoryless run
-        LANGGRAPH_ASSISTANT_ID,
-        { input: { prompt: prompt } },
-      ),
-      timeoutPromise,
-    ])
 
     console.log("[v0] LangGraph response received")
     console.log("[v0] LangGraph response type:", typeof result)
