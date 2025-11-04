@@ -1,7 +1,7 @@
 import { Client } from "@langchain/langgraph-sdk"
 import { createAdminClient } from "@/lib/supabase/admin"
 
-export const maxDuration = 60
+export const maxDuration = 59
 export const dynamic = "force-dynamic" // Ensure this route is not cached
 
 const LANGGRAPH_API_URL = "https://animai-7ae3101060ad56a4a38c382a0479ece6.us.langgraph.app"
