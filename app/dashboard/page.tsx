@@ -34,6 +34,7 @@ export default function DashboardPage() {
   const [isLoading, setIsLoading] = useState(true)
   const router = useRouter()
   const supabase = createClient()
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false)
 
   useEffect(() => {
     const initializeUser = async () => {
@@ -229,17 +230,35 @@ export default function DashboardPage() {
   }
 
   return (
-    <div className="flex h-screen bg-background">
-      <ChatHistorySidebar
-        sessions={sessions}
-        currentSessionId={currentSessionId || undefined}
-        onNewChat={handleNewChat}
-        onSelectSession={handleSelectSession}
-        onDeleteSession={handleDeleteSession}
-        userEmail={user?.email}
-        subscriptionTier={profile?.subscription_tier}
-      />
-      <div className="flex-1 flex flex-col">
+    <div className="flex h-screen bg-background overflow-hidden">
+      {/* Mobile sidebar overlay */}
+      {isSidebarOpen && (
+        <div className="fixed inset-0 bg-black/50 z-40 lg:hidden" onClick={() => setIsSidebarOpen(false)} />
+      )}
+
+      {/* Sidebar - hidden on mobile, slide in when open */}
+      <div
+        className={`
+        fixed lg:relative inset-y-0 left-0 z-50 lg:z-0
+        transform transition-transform duration-300 ease-in-out
+        ${isSidebarOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"}
+      `}
+      >
+        <ChatHistorySidebar
+          sessions={sessions}
+          currentSessionId={currentSessionId || undefined}
+          onNewChat={handleNewChat}
+          onSelectSession={(id) => {
+            handleSelectSession(id)
+            setIsSidebarOpen(false)
+          }}
+          onDeleteSession={handleDeleteSession}
+          userEmail={user?.email}
+          subscriptionTier={profile?.subscription_tier}
+        />
+      </div>
+
+      <div className="flex-1 flex flex-col min-w-0">
         <TopBar showAuth={false} />
         <div className="flex-1 overflow-hidden">
           <ChatInterface messages={messages} onSendMessage={handleSendMessage} />
