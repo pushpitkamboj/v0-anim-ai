@@ -83,7 +83,7 @@ export default function ChatInterface({ messages, onSendMessage }: ChatInterface
       <div className="flex-1 overflow-y-auto flex flex-col items-center w-full px-3 sm:px-4">
         <div className="w-full max-w-3xl py-3 sm:py-4">
           {messages.length === 0 ? (
-            <div className="flex items-center justify-center h-full min-h-[250px] sm:min-h-[300px]">
+            <div className="flex items-center justify-center h-full min-h-[250px] sm:min-h-[300px] pt-20 sm:pt-0">
               <div className="text-center max-w-2xl px-2">
                 <div className="relative mb-3 sm:mb-4">
                   <div className="absolute inset-0 bg-gradient-to-br from-foreground/10 to-foreground/5 rounded-3xl blur-3xl" />
