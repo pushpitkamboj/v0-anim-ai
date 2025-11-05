@@ -48,6 +48,7 @@ export async function startCheckoutSession(planId: string) {
     customer: customerId,
     ui_mode: "embedded",
     redirect_on_completion: "never",
+    payment_method_types: ["card", "link"],
     line_items: [
       {
         price_data: {
