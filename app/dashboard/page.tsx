@@ -259,7 +259,7 @@ export default function DashboardPage() {
       </div>
 
       <div className="flex-1 flex flex-col min-w-0">
-        <TopBar showAuth={false} />
+        <TopBar showAuth={false} showMenuButton={true} onMenuClick={() => setIsSidebarOpen(!isSidebarOpen)} />
         <div className="flex-1 overflow-hidden">
           <ChatInterface messages={messages} onSendMessage={handleSendMessage} />
         </div>
