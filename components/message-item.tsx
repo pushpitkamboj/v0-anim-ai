@@ -26,6 +26,7 @@ const LOADING_STAGES = [
 export default function MessageItem({ message }: MessageItemProps) {
   const [loadingStage, setLoadingStage] = useState(0)
   const [elapsedTime, setElapsedTime] = useState(0)
+  const [displayedText, setDisplayedText] = useState("")
 
   useEffect(() => {
     if (!message.isLoading) return
@@ -55,6 +56,28 @@ export default function MessageItem({ message }: MessageItemProps) {
       stageTimers.forEach((timeout) => clearTimeout(timeout))
     }
   }, [message.isLoading])
+
+  useEffect(() => {
+    if (!message.isResponse || message.videoUrl || message.isLoading) {
+      setDisplayedText(message.text)
+      return
+    }
+
+    setDisplayedText("")
+    let currentIndex = 0
+    const typingSpeed = 20
+
+    const typingInterval = setInterval(() => {
+      if (currentIndex <= message.text.length) {
+        setDisplayedText(message.text.substring(0, currentIndex))
+        currentIndex++
+      } else {
+        clearInterval(typingInterval)
+      }
+    }, typingSpeed)
+
+    return () => clearInterval(typingInterval)
+  }, [message.text, message.isResponse, message.videoUrl, message.isLoading])
 
   const formatTime = (date: Date) => {
     return new Date(date).toLocaleTimeString("en-US", {
@@ -89,7 +112,7 @@ export default function MessageItem({ message }: MessageItemProps) {
             message.isResponse ? "text-black dark:text-white" : "text-white dark:text-black"
           }`}
         >
-          {message.text}
+          {displayedText}
         </p>
 
         <p

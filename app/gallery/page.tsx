@@ -3,11 +3,13 @@
 import { Sparkles, Play } from "lucide-react"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
+import { useState } from "react"
 
 const GALLERY_ITEMS = [
   {
     title: "Draw the equation of SHM",
-    videoUrl: "https://pub-b215a097b7b243dc86da838a88d50339.r2.dev/media/videos/SimpleHarmonicMotionGraph/480p15/SimpleHarmonicMotionGraph.mp4",
+    videoUrl:
+      "https://pub-b215a097b7b243dc86da838a88d50339.r2.dev/media/videos/SimpleHarmonicMotionGraph/480p15/SimpleHarmonicMotionGraph.mp4",
     date: "2024-01-15",
   },
   {
@@ -17,12 +19,14 @@ const GALLERY_ITEMS = [
   },
   {
     title: "Derive the Formula for Thales Theorem",
-    videoUrl: "https://pub-b215a097b7b243dc86da838a88d50339.r2.dev/media/videos/ThalesTheoremDerivation/480p15/ThalesTheoremDerivation.mp4",
+    videoUrl:
+      "https://pub-b215a097b7b243dc86da838a88d50339.r2.dev/media/videos/ThalesTheoremDerivation/480p15/ThalesTheoremDerivation.mp4",
     date: "2024-01-13",
   },
   {
     title: "Draw y = x^3 Plot",
-    videoUrl: "https://pub-b215a097b7b243dc86da838a88d50339.r2.dev/media/videos/CubicFunctionPlot/480p15/CubicFunctionPlot.mp4",
+    videoUrl:
+      "https://pub-b215a097b7b243dc86da838a88d50339.r2.dev/media/videos/CubicFunctionPlot/480p15/CubicFunctionPlot.mp4",
     date: "2024-01-12",
   },
   {
@@ -38,6 +42,8 @@ const GALLERY_ITEMS = [
 ]
 
 export default function GalleryPage() {
+  const [selectedVideo, setSelectedVideo] = useState<{ title: string; url: string } | null>(null)
+
   return (
     <div className="min-h-screen bg-background">
       {/* Hero Section */}
@@ -65,7 +71,8 @@ export default function GalleryPage() {
             {GALLERY_ITEMS.map((item, index) => (
               <div
                 key={index}
-                className="group relative bg-card rounded-2xl overflow-hidden border border-border hover:border-foreground/20 transition-all duration-300 hover:shadow-2xl hover:-translate-y-1"
+                className="group relative bg-card rounded-2xl overflow-hidden border border-border hover:border-foreground/20 transition-all duration-300 hover:shadow-2xl hover:-translate-y-1 cursor-pointer"
+                onClick={() => setSelectedVideo({ title: item.title, url: item.videoUrl })}
               >
                 {/* Video Container */}
                 <div className="relative aspect-video bg-muted">
@@ -135,6 +142,29 @@ export default function GalleryPage() {
           </Button>
         </div>
       </div>
+
+      {selectedVideo && (
+        <div
+          className="fixed inset-0 z-50 bg-black/80 flex items-center justify-center p-4 backdrop-blur-sm"
+          onClick={() => setSelectedVideo(null)}
+        >
+          <div
+            className="relative w-full max-w-4xl aspect-video bg-black rounded-2xl overflow-hidden shadow-2xl"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <video src={selectedVideo.url} autoPlay controls className="w-full h-full" />
+            <button
+              onClick={() => setSelectedVideo(null)}
+              className="absolute top-4 right-4 bg-black/50 hover:bg-black/80 text-white rounded-full p-2 transition-all"
+            >
+              <span className="text-2xl">✕</span>
+            </button>
+            <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-6">
+              <p className="text-white font-semibold text-lg">{selectedVideo.title}</p>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }

@@ -92,7 +92,7 @@ export default function ChatInterface({ messages, onSendMessage }: ChatInterface
                   </div>
                 </div>
 
-                <h1 className="text-foreground text-2xl sm:text-3xl font-black mb-1 tracking-tight">Vectora Studio</h1>
+                <h1 className="text-foreground text-2xl sm:text-3xl font-black mb-1 tracking-tight">Vectora &nbsp; Studio</h1>
                 <p className="text-muted-foreground text-sm sm:text-base mb-4 sm:mb-5 font-medium leading-relaxed max-w-lg mx-auto px-2">
                   Great Animations Take Time. Ours? Just 5 Mins.
                 </p>

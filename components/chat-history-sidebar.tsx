@@ -151,11 +151,11 @@ export default function ChatHistorySidebar({
                     >
                       <MessageSquare className="h-3 w-3 sm:h-3.5 sm:w-3.5" />
                     </div>
-                    <span className="text-xs sm:text-sm font-medium truncate flex-1 min-w-0">{session.title}</span>
+                    <span className="text-xs sm:text-sm font-medium truncate flex-1">{session.title}</span>
                     <Button
                       variant="ghost"
                       size="icon"
-                      className="h-6 w-6 sm:h-7 sm:w-7 flex-shrink-0 opacity-0 group-hover:opacity-100 transition-opacity hover:bg-destructive/10 hover:text-destructive"
+                      className="h-6 w-6 sm:h-7 sm:w-7 flex-shrink-0 opacity-100 transition-opacity hover:bg-destructive/10 hover:text-destructive"
                       onClick={(e) => handleDeleteClick(session.id, e)}
                     >
                       <Trash2 className="h-3 w-3 sm:h-3.5 sm:w-3.5" />
