@@ -105,7 +105,7 @@ export default function ChatHistorySidebar({
               <Sparkles className="text-primary-foreground" size={14} />
             </div>
             <div>
-              <h2 className="text-xs sm:text-sm font-bold text-foreground">VertexAI Studio</h2>
+              <h2 className="text-xs sm:text-sm font-bold text-foreground">Vectora Studio</h2>
               <p className="text-[10px] sm:text-xs text-muted-foreground">Your Workspace</p>
             </div>
           </div>

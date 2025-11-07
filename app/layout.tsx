@@ -9,7 +9,7 @@ const _geistMono = Geist_Mono({ subsets: ["latin"] })
 const _poppins = Poppins({ subsets: ["latin"], weight: ["400", "500", "600", "700", "800", "900"] })
 
 export const metadata: Metadata = {
-  title: "VertexAI - AI Animation Generator",
+  title: "Vectora - AI Animation Generator", // Updated from VertexAI to Vectora
   description: "Generate stunning animations with AI",
   generator: "v0.app",
 }

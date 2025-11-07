@@ -2,7 +2,7 @@ export interface SubscriptionPlan {
   id: string
   name: string
   description: string
-  priceInCents: number
+  priceInPaise: number // Changed from priceInCents to priceInPaise for INR
   features: string[]
   tier: "pro" | "team" | "enterprise"
   popular?: boolean
@@ -13,7 +13,7 @@ export const SUBSCRIPTION_PLANS: SubscriptionPlan[] = [
     id: "pro-plan",
     name: "Pro",
     description: "Perfect for individuals and creators",
-    priceInCents: 1999, // $19.99/month
+    priceInPaise: 199900, // ₹1999/month in paise
     tier: "pro",
     features: [
       "Unlimited video generations",
@@ -28,7 +28,7 @@ export const SUBSCRIPTION_PLANS: SubscriptionPlan[] = [
     id: "team-plan",
     name: "Team",
     description: "Best for small teams and businesses",
-    priceInCents: 4999, // $49.99/month
+    priceInPaise: 499900, // ₹4999/month in paise
     tier: "team",
     popular: true,
     features: [
@@ -45,7 +45,7 @@ export const SUBSCRIPTION_PLANS: SubscriptionPlan[] = [
     id: "enterprise-plan",
     name: "Enterprise",
     description: "For large organizations with custom needs",
-    priceInCents: 19999, // $199.99/month
+    priceInPaise: 999900, // ₹9999/month in paise
     tier: "enterprise",
     features: [
       "Everything in Team",

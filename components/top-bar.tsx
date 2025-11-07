@@ -36,7 +36,7 @@ export default function TopBar({ showAuth = true, onMenuClick, showMenuButton = 
           </div>
           <div>
             <h1 className="text-xl sm:text-2xl font-black text-foreground tracking-tight group-hover:tracking-normal transition-all">
-              VertexAI
+              Vectora
             </h1>
             <p className="text-[9px] sm:text-[10px] text-muted-foreground font-bold uppercase tracking-wider hidden xs:block">
               Math • Physics • Chemistry
@@ -47,6 +47,10 @@ export default function TopBar({ showAuth = true, onMenuClick, showMenuButton = 
 
       {/* Right Side Content */}
       <div className="flex items-center gap-2 sm:gap-3">
+        <Button asChild variant="ghost" size="sm" className="font-semibold text-xs sm:text-sm px-2 sm:px-4">
+          <Link href="/gallery">Gallery</Link>
+        </Button>
+
         {showAuth && (
           <div className="flex items-center gap-1.5 sm:gap-2">
             <Button asChild variant="ghost" size="sm" className="font-semibold text-xs sm:text-sm px-2 sm:px-4">
@@ -67,7 +71,7 @@ export default function TopBar({ showAuth = true, onMenuClick, showMenuButton = 
           target="_blank"
           rel="noopener noreferrer"
           className="text-muted-foreground hover:text-foreground transition-all duration-300 hover:scale-110 p-1.5 sm:p-2 rounded-lg hover:bg-muted"
-          aria-label="View VertexAI on GitHub"
+          aria-label="View Vectora on GitHub"
         >
           <FaGithub size={18} className="sm:w-5 sm:h-5" />
         </a>

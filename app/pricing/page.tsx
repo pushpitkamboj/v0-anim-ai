@@ -26,7 +26,7 @@ export default async function PricingPage() {
         <div className="text-center mb-8 sm:mb-12">
           <h1 className="text-3xl sm:text-4xl font-bold mb-3 sm:mb-4">Choose Your Plan</h1>
           <p className="text-base sm:text-xl text-muted-foreground px-4">
-            Unlock the full potential of VertexAI with our premium plans
+            Unlock the full potential of Vectora with our premium plans
           </p>
         </div>
 
@@ -44,7 +44,7 @@ export default async function PricingPage() {
                 <CardTitle className="text-xl sm:text-2xl">{plan.name}</CardTitle>
                 <CardDescription className="text-sm">{plan.description}</CardDescription>
                 <div className="mt-3 sm:mt-4">
-                  <span className="text-3xl sm:text-4xl font-bold">${(plan.priceInCents / 100).toFixed(0)}</span>
+                  <span className="text-3xl sm:text-4xl font-bold">₹{(plan.priceInPaise / 100).toFixed(0)}</span>
                   <span className="text-muted-foreground text-sm">/month</span>
                 </div>
               </CardHeader>

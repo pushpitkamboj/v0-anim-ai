@@ -63,7 +63,7 @@ export default function SignUpPage() {
       <div className="w-full max-w-sm">
         <div className="flex flex-col gap-6">
           <div className="text-center mb-2">
-            <h1 className="text-3xl font-bold mb-2">VertexAI</h1>
+            <h1 className="text-3xl font-bold mb-2">Vectora</h1> {/* Updated from VertexAI to Vectora */}
             <p className="text-muted-foreground">Transform text into animated videos</p>
           </div>
           <Card>
